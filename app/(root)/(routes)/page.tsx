@@ -15,4 +15,6 @@ export default function SetupPage() {
     }
   }, [isOpen, onOpen]);
   return null;
+
+  // return <div>How are you doing</div>;
 }

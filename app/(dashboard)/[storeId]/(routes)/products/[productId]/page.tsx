@@ -4,21 +4,22 @@ import { ProductForm } from "./components/product-form";
 const ProductPage = async ({
   params,
 }: {
-  params: { productId: string; storeId: string };
+  params: Promise<{ productId: string; storeId: string }>;
 }) => {
+  const { storeId, productId } = await params;
   const product = await prismadb.product.findUnique({
-    where: { id: params.productId },
+    where: { id: productId },
     include: { images: true },
   });
 
   const categories = await prismadb.category.findMany({
-    where: { storeId: params.storeId },
+    where: { storeId: storeId },
   });
   const sizes = await prismadb.size.findMany({
-    where: { storeId: params.storeId },
+    where: { storeId: storeId },
   });
   const colors = await prismadb.color.findMany({
-    where: { storeId: params.storeId },
+    where: { storeId: storeId },
   });
   return (
     <div className="flex-col">

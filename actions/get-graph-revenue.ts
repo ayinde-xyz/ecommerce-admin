@@ -35,6 +35,7 @@ export const getGraphRevenue = async (
 
     // Adding the revenue for this order to the respective month
     monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder;
+    // console.log(monthlyRevenue);
   }
 
   // Converting the grouped data into the format expected by the graph

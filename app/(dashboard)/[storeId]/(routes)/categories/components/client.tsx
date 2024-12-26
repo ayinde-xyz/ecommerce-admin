@@ -27,7 +27,7 @@ const CategoryClient: React.FC<CategoryClientProps> = ({ data }) => {
         <Button
           onClick={() => router.push(`/${params.storeId}/categories/new`)}>
           <Plus className="h-4 w-4 mr-2" />
-          Add New
+          <span className="sm:inline-block hidden">Add New</span>
         </Button>
       </div>
       <Separator />

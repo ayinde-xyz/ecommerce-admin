@@ -24,7 +24,7 @@ export const columns: ColumnDef<CategoryColumn>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "header",
+    header: "Date",
   },
   {
     id: "action",

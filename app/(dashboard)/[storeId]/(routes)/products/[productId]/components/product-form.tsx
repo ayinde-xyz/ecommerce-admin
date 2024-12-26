@@ -175,7 +175,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 grid-cols-1 gap-8">
             <FormField
               control={form.control}
               name="name"
@@ -203,7 +203,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     <Input
                       type="number"
                       disabled={loading}
-                      placeholder="$9.99"
+                      placeholder="10"
                       {...field}
                     />
                   </FormControl>

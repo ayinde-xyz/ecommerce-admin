@@ -3,9 +3,14 @@ import SizesClient from "./components/client";
 import { SizeColumn } from "./components/columns";
 import { format } from "date-fns";
 
-const SizesPage = async ({ params }: { params: { storeId: string } }) => {
+const SizesPage = async ({
+  params,
+}: {
+  params: Promise<{ storeId: string }>;
+}) => {
+  const { storeId } = await params;
   const sizes = await prismadb.size.findMany({
-    where: { storeId: params.storeId },
+    where: { storeId: storeId },
     orderBy: { createdAt: "desc" },
   });
 

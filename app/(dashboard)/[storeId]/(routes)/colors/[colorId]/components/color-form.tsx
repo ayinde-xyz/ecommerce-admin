@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Heading } from "@/components/ui/heading";
-import ImageUpload from "@/components/ui/image-upload";
+
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -118,7 +118,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full">
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 grid-cols-1 gap-8">
             <FormField
               control={form.control}
               name="name"
