@@ -18,7 +18,21 @@ export async function POST(
   { params }: { params: Promise<{ storeId: string }> }
 ) {
   const { storeId } = await params;
-  const { productIds } = await req.json();
+  const { productsOrdered } = await req.json();
+
+  if (!productsOrdered || productsOrdered.length === 0) {
+    return new NextResponse("Products are required", { status: 400 });
+  }
+
+  console.log("checkoutInfo", productsOrdered);
+  const productIds = productsOrdered.map(
+    (product: { id: string }) => product.id
+  );
+  const productQuantities = productsOrdered.map(
+    (product: { quantity: number }) => product.quantity
+  );
+
+  console.log("productIds", productIds);
 
   if (!productIds || productIds.length === 0) {
     return new NextResponse("Product IDs are required", { status: 400 });
@@ -43,7 +57,7 @@ export async function POST(
         },
         unit_amount: product.price.toNumber() * 100,
       },
-      quantity: 1,
+      quantity: productQuantities[productIds.indexOf(product.id)],
     });
   });
 
@@ -53,6 +67,7 @@ export async function POST(
       isPaid: false,
       orderItems: {
         create: productIds.map((productId: string) => ({
+          orderQuantity: productQuantities[productIds.indexOf(productId)],
           product: {
             connect: {
               id: productId,
@@ -62,6 +77,8 @@ export async function POST(
       },
     },
   });
+
+  console.log("order", order);
 
   const session = await stripe.checkout.sessions.create({
     line_items,
