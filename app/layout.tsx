@@ -1,11 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Comfortaa, Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
 import { ModalProvider } from "@/providers/modal-provider";
-import prismadb from "@/lib/prismadb";
 import { ToasterProvider } from "@/providers/toast-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 // const inter = Inter({ subsets: ["latin"] });
 const comfortaa = Comfortaa({ subsets: ["latin"] });
@@ -15,24 +16,23 @@ export const metadata: Metadata = {
   description: "Admin Dashboard",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   // const store = prismadb.store.update;
+
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${comfortaa.className} w-full`}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <ToasterProvider />
-            <ModalProvider />
-            {children}
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={`${comfortaa.className} w-full`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ToasterProvider />
+          <ModalProvider />
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
 

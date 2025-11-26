@@ -2,12 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../app/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider     = "postgresql"
+  relationMode = "prisma"
 }
 
 model Store {
@@ -138,87 +139,4 @@ model OrderItem {
 
   @@index([orderId])
   @@index([productId])
-}
-
-model User {
-  id                  String      @id @default(uuid())
-  name                String
-  email               String
-  emailVerified       Boolean     @default(false)
-  image               String?
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @default(now()) @updatedAt
-  role                String?
-  banned              Boolean?    @default(false)
-  banReason           String?
-  banExpires          DateTime?
-  twoFactorEnabled    Boolean?    @default(false)
-  phoneNumber         String?
-  phoneNumberVerified Boolean?
-  username            String?
-  displayUsername     String?
-  sessions            Session[]
-  accounts            Account[]
-  twofactors          TwoFactor[]
-
-  @@unique([email])
-  @@unique([phoneNumber])
-  @@unique([username])
-  @@map("user")
-}
-
-model Session {
-  id             String   @id @default(uuid())
-  expiresAt      DateTime
-  token          String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  ipAddress      String?
-  userAgent      String?
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  impersonatedBy String?
-
-  @@unique([token])
-  @@map("session")
-}
-
-model Account {
-  id                    String    @id @default(uuid())
-  accountId             String
-  providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-
-  @@map("account")
-}
-
-model Verification {
-  id         String   @id @default(uuid())
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
-
-  @@map("verification")
-}
-
-model TwoFactor {
-  id          String @id
-  secret      String
-  backupCodes String
-  userId      String
-  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("twoFactor")
 }

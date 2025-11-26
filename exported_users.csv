@@ -1,0 +1,3 @@
+id,first_name,last_name,username,primary_email_address,primary_phone_number,verified_email_addresses,unverified_email_addresses,verified_phone_numbers,unverified_phone_numbers,totp_secret,password_digest,password_hasher
+user_2WqBNsGQbdDSQ8kYmWfPaSVkuds,AbdurRahman,Ayinde,,ayindeabdulrahman16@gmail.com,,ayindeabdulrahman16@gmail.com,,,,,,
+user_2yqPP2YsB2afUeqdo5KHSBKyC6V,Daniel,Gbesimowo,,danielgbesimowo7@gmail.com,,danielgbesimowo7@gmail.com,,,,,,
