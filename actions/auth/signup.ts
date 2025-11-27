@@ -1,16 +1,18 @@
 "use server";
 
 import { auth, ErrorCode } from "@/lib/auth";
-import { loginFormSchema } from "@/schemas";
+import { signupFormSchema } from "@/schemas";
 import { APIError } from "better-auth";
-import { redirect } from "next/navigation";
-import * as z from "zod";
+import z from "zod";
 
-export async function signInEmailAction(data: z.infer<typeof loginFormSchema>) {
-  const { email, password } = data;
+export async function signupEmailAction(
+  data: z.infer<typeof signupFormSchema>
+) {
+  const { name, email, password } = data;
   try {
-    const res = await auth.api.signInEmail({
+    const res = await auth.api.signUpEmail({
       body: {
+        name,
         email,
         password,
       },
@@ -18,15 +20,15 @@ export async function signInEmailAction(data: z.infer<typeof loginFormSchema>) {
     });
 
     if (res.ok) {
-      return { success: "Sign up successful" };
+      return { success: "Sign Up successful" };
     }
   } catch (err) {
     if (err instanceof APIError) {
       const errCode = err.body ? (err.body.code as ErrorCode) : "UNKNOWN";
-      console.dir(err, { depth: 5 });
+
       switch (errCode) {
-        case "EMAIL_NOT_VERIFIED":
-          redirect("/auth/verify?error=email_not_verified");
+        case "USER_ALREADY_EXISTS":
+          return { error: "Oops! Something went wrong. Please try again." };
         default:
           return { error: err.message };
       }

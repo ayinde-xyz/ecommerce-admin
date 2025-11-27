@@ -1,6 +1,4 @@
 "use client";
-
-import { login } from "@/actions/auth/login";
 import { signIn } from "@/lib/auth-client";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -26,6 +24,8 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { loginFormSchema } from "@/schemas";
+import { signInEmailAction } from "@/actions/auth/login";
 
 export function LoginForm({
   className,
@@ -34,20 +34,15 @@ export function LoginForm({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const formSchema = z.object({
-    email: z.email({ error: "Invalid email address." }),
-    password: z.string().min(8, "Password must be at least 8 characters."),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
     console.log(data);
     toast("You submitted the following values:", {
       description: (
@@ -63,6 +58,8 @@ export function LoginForm({
         "--border-radius": "calc(var(--radius)  + 4px)",
       } as React.CSSProperties,
     });
+    const response = await signInEmailAction(data);
+    console.log(response);
   };
 
   const handleLogin = async () => {
@@ -92,7 +89,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <SocialLogin />
             <FieldGroup>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">

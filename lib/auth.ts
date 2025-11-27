@@ -3,11 +3,16 @@ import { admin, twoFactor, phoneNumber, username } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prismadb from "./prismadb";
 import { nextCookies } from "better-auth/next-js";
+import { hashPassword } from "better-auth/crypto";
 
 export const auth = betterAuth({
   database: prismaAdapter(prismadb, {
     provider: "postgresql",
   }),
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: false,
+  },
   advanced: {
     database: {
       generateId: false,
@@ -29,3 +34,5 @@ export const auth = betterAuth({
 
   plugins: [nextCookies()],
 });
+
+export type ErrorCode = keyof typeof auth.$ERROR_CODES | "UNKNOWN";

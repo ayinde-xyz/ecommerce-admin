@@ -26,6 +26,8 @@ import * as z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { signupFormSchema } from "@/schemas";
+import { signupEmailAction } from "@/actions/auth/signup";
 
 export function SignupForm({
   className,
@@ -34,14 +36,8 @@ export function SignupForm({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const formSchema = z.object({
-    name: z.string().min(2, "Name must be at least 2 characters."),
-    email: z.email({ error: "Invalid email address." }),
-    password: z.string().min(8, "Password must be at least 8 characters."),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signupFormSchema>>({
+    resolver: zodResolver(signupFormSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -49,7 +45,7 @@ export function SignupForm({
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof signupFormSchema>) => {
     console.log(data);
     toast("You submitted the following values:", {
       description: (
@@ -65,6 +61,9 @@ export function SignupForm({
         "--border-radius": "calc(var(--radius)  + 4px)",
       } as React.CSSProperties,
     });
+    const response = await signupEmailAction(data);
+    console.log(response);
+    return response;
   };
 
   const handleSocialLogin = async (provider: "apple" | "google") => {
@@ -170,7 +169,7 @@ export function SignupForm({
               />
 
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit">Sign up</Button>
                 <FieldDescription className="text-center">
                   Have an account? <Link href="/login">Login</Link>
                 </FieldDescription>
