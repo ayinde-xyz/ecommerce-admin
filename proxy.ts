@@ -8,7 +8,7 @@ export async function proxy(request: NextRequest) {
   console.log("Session Cookie in Middleware:", sessionCookie);
   // Redirect authenticated users away from login/signup pages
   if (sessionCookie && ["/login", "/signup"].includes(pathname)) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/dashboard/[storeId]", request.url));
   }
 
   // Redirect unauthenticated users trying to access protected routes

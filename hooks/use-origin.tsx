@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
 export const useOrigin = () => {
@@ -7,7 +9,11 @@ export const useOrigin = () => {
       ? window.location.origin
       : "";
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    // Defer state update to avoid "calling setState synchronously within an effect"
+    const id = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(id);
+  }, []);
 
   if (!mounted) {
     return "";

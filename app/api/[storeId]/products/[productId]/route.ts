@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
 import prismadb from "@/lib/prismadb";
 
@@ -38,7 +39,11 @@ export async function DELETE(
 ) {
   try {
     const { productId, storeId } = await params;
-    const { userId } = await auth();
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    const userId = session?.user.id;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -78,8 +83,11 @@ export async function PATCH(
 ) {
   try {
     const { productId, storeId } = await params;
-    const { userId } = await auth();
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
 
+    const userId = session?.user.id;
     const body = await req.json();
 
     const {

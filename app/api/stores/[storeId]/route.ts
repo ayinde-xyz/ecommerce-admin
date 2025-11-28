@@ -1,5 +1,6 @@
+import { auth } from "@/lib/auth";
 import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs/server";
+import { headers } from "next/headers";
 import { useParams } from "next/navigation";
 import { NextResponse } from "next/server";
 
@@ -12,8 +13,11 @@ export async function PATCH(
   }
 ) {
   try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
     const { storeId } = await params;
-    const { userId } = await auth();
+    const userId = session?.user.id;
 
     const body = await req.json();
     const { name } = body;
@@ -49,8 +53,11 @@ export async function DELETE(
   }
 ) {
   try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
     const { storeId } = await params;
-    const { userId } = await auth();
+    const userId = session?.user.id;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
