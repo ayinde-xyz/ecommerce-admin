@@ -2,11 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Comfortaa, Inter } from "next/font/google";
 import { ModalProvider } from "@/providers/modal-provider";
-import { ToasterProvider } from "@/providers/toast-provider";
 import { ThemeProvider } from "@/components/theme-provider";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { Toaster } from "sonner";
 
 // const inter = Inter({ subsets: ["latin"] });
 const comfortaa = Comfortaa({ subsets: ["latin"] });
@@ -27,9 +24,10 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${comfortaa.className} w-full`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ToasterProvider />
+          {/* <ToasterProvider /> */}
           <ModalProvider />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

@@ -26,6 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { loginFormSchema } from "@/schemas";
 import { signInEmailAction } from "@/actions/auth/login";
+import { redirect } from "next/navigation";
 
 export function LoginForm({
   className,
@@ -43,8 +44,7 @@ export function LoginForm({
   });
 
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
-    console.log(data);
-    toast("You submitted the following values:", {
+    toast.loading("You submitted the following values:", {
       description: (
         <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
           <code>{JSON.stringify(data, null, 2)}</code>
@@ -59,7 +59,10 @@ export function LoginForm({
       } as React.CSSProperties,
     });
     const response = await signInEmailAction(data);
+
     console.log(response);
+
+    redirect("/");
   };
 
   const handleLogin = async () => {

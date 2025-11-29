@@ -17,9 +17,7 @@ export async function signInEmailAction(data: z.infer<typeof loginFormSchema>) {
       asResponse: true,
     });
 
-    if (res.ok) {
-      return { success: "Sign up successful" };
-    }
+    return res.json();
   } catch (err) {
     if (err instanceof APIError) {
       const errCode = err.body ? (err.body.code as ErrorCode) : "UNKNOWN";
