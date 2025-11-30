@@ -8,6 +8,7 @@ import * as z from "zod";
 
 export async function signInEmailAction(data: z.infer<typeof loginFormSchema>) {
   const { email, password } = data;
+
   try {
     const res = await auth.api.signInEmail({
       body: {
@@ -17,11 +18,9 @@ export async function signInEmailAction(data: z.infer<typeof loginFormSchema>) {
       asResponse: true,
     });
 
-    if (!res.ok) {
-      return res.json();
+    if (res.ok) {
+      return { success: "Sign in successful" };
     }
-
-    return { success: "Sign in successful" };
   } catch (err) {
     if (err instanceof APIError) {
       const errCode = err.body ? (err.body.code as ErrorCode) : "UNKNOWN";

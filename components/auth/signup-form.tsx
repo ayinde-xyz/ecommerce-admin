@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn } from "@/lib/auth-client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,8 +33,7 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
@@ -66,23 +65,6 @@ export function SignupForm({
     return response;
   };
 
-  const handleSocialLogin = async (provider: "apple" | "google") => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const result = await signIn.social({
-        provider: provider,
-      });
-      // if (result?.error) {
-      //   setError(result.error);
-      // }
-    } catch (err) {
-      setError("An unexpected error occurred during sign-in");
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -94,20 +76,7 @@ export function SignupForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <Field>
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => handleSocialLogin("apple")}>
-                Login with Apple
-              </Button>
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => handleSocialLogin("google")}>
-                Login with Google
-              </Button>
-            </Field>
+            <SocialLogin isPending={isPending} />
             <FieldGroup>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with

@@ -1,6 +1,6 @@
 "use client";
 import { signIn } from "@/lib/auth-client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,6 +35,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -44,7 +45,7 @@ export function LoginForm({
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
+  const onSubmit = (data: z.infer<typeof loginFormSchema>) => {
     // toast.loading("You submitted the following values:", {
     //   description: (
     //     <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
@@ -59,35 +60,24 @@ export function LoginForm({
     //     "--border-radius": "calc(var(--radius)  + 4px)",
     //   } as React.CSSProperties,
     // });
-    const response = await signInEmailAction(data);
-    console.log(response);
+    startTransition(() =>
+      signInEmailAction(data)
+        .then((result) => {
+          console.log(error);
+          if (result?.error) {
+            toast.error(result.error);
+          }
 
-    if (response.code as ErrorCode) {
-      toast.error(response.message);
-    }
-
-    if (response.success) {
-      redirect("/");
-    }
+          if (result?.success) {
+            redirect("/");
+          }
+        })
+        .catch(() => {
+          toast.error("Something went wrong");
+        })
+    );
   };
 
-  const handleLogin = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const result = await signIn.social({
-        provider: "google",
-      });
-      // if (result?.error) {
-      //   setError(result.error);
-      // }
-    } catch (err) {
-      setError("An unexpected error occurred during sign-in");
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -99,7 +89,7 @@ export function LoginForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <SocialLogin />
+            <SocialLogin isPending={isPending} />
             <FieldGroup>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
@@ -143,7 +133,9 @@ export function LoginForm({
               />
 
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={isPending}>
+                  Login
+                </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <a href="/signup">Sign up</a>
                 </FieldDescription>
