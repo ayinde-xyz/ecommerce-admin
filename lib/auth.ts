@@ -1,9 +1,7 @@
 import { betterAuth } from "better-auth";
-import { admin, twoFactor, phoneNumber, username } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prismadb from "./prismadb";
 import { nextCookies } from "better-auth/next-js";
-import { hashPassword } from "better-auth/crypto";
 
 export const auth = betterAuth({
   database: prismaAdapter(prismadb, {
@@ -23,6 +21,11 @@ export const auth = betterAuth({
     cookieCache: {
       enabled: true,
       maxAge: 5 * 60,
+    },
+  },
+  account: {
+    accountLinking: {
+      enabled: false,
     },
   },
   socialProviders: {

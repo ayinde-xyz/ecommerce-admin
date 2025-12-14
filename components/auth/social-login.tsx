@@ -11,10 +11,19 @@ type Props = {
 export const SocialLogin = ({ isPending }: Props) => {
   const handleLogin = async (provider: "apple" | "google") => {
     try {
+      toast.loading("Signing in...");
       const result = await signIn.social({
         provider,
       });
-      console.log(result);
+
+      if (result.error) {
+        toast.dismiss();
+        toast.error(result.error.message || "Something went wrong");
+        return;
+      }
+
+      toast.dismiss();
+      toast.success("Signed in successfully!");
     } catch (err) {
       if (err instanceof APIError) {
         toast.error(err.message);

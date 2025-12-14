@@ -46,10 +46,12 @@ export function LoginForm({
   });
 
   const onSubmit = (data: z.infer<typeof loginFormSchema>) => {
+    toast.loading("Logging in...");
     startTransition(() =>
       signInEmailAction(data).then((result) => {
         console.log(result);
         if (result?.code) {
+          toast.dismiss();
           toast.error(result.message || "Something went wrong");
         }
       })
