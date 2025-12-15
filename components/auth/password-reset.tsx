@@ -26,25 +26,23 @@ import * as z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { signupFormSchema } from "@/schemas";
+import { passwordResetSchema } from "@/schemas";
 import { signupEmailAction } from "@/actions/auth/signup";
 
-export function SignupForm({
+export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof signupFormSchema>>({
-    resolver: zodResolver(signupFormSchema),
+  const form = useForm<z.infer<typeof passwordResetSchema>>({
+    resolver: zodResolver(passwordResetSchema),
     defaultValues: {
-      name: "",
       email: "",
-      password: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof signupFormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof passwordResetSchema>) => {
     console.log(data);
     toast("You submitted the following values:", {
       description: (
@@ -69,37 +67,12 @@ export function SignupForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome!</CardTitle>
-          <CardDescription>
-            Sign up with your Apple or Google account
-          </CardDescription>
+          <CardTitle className="text-xl">Forgot Password</CardTitle>
+          <CardDescription></CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <SocialLogin isPending={isPending} />
             <FieldGroup>
-              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Or continue with
-              </FieldSeparator>
-              <Controller
-                name="name"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field>
-                    <FieldLabel htmlFor="name">Name</FieldLabel>
-                    <Input
-                      {...field}
-                      id="name"
-                      type="text"
-                      placeholder="Your name"
-                      required
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
               <Controller
                 name="email"
                 control={form.control}
@@ -119,23 +92,11 @@ export function SignupForm({
                   </Field>
                 )}
               />
-              <Controller
-                name="password"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field>
-                    <div className="flex items-center">
-                      <FieldLabel htmlFor="password">Password</FieldLabel>
-                    </div>
-                    <Input {...field} id="password" type="password" required />
-                  </Field>
-                )}
-              />
 
               <Field>
-                <Button type="submit">Sign up</Button>
+                <Button type="submit">Send Reset Email</Button>
                 <FieldDescription className="text-center">
-                  Have an account? <Link href="/login">Login</Link>
+                  Don't Have an account <Link href="/signup">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

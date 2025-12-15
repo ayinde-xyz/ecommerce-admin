@@ -1,6 +1,4 @@
 "use client";
-
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ImagePlus, Trash } from "lucide-react";
 import Image from "next/image";
@@ -19,19 +17,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onRemove,
   value,
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  // This is a client component ("use client") so it won't be server-rendered.
+  // No mount guard is required — render directly.
 
   const onUpload = (result: any) => {
     onChange(result.info.secure_url);
   };
 
-  if (!isMounted) {
-    return null;
-  }
+  // Render immediately on the client
 
   return (
     <div>

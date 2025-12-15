@@ -1,7 +1,11 @@
-import { LoginForm } from "@/components/auth/login-form";
+import {
+  ForgotPasswordForm,
+  PasswordResetForm,
+} from "@/components/auth/password-reset";
+import { SignupForm } from "@/components/auth/signup-form";
 import { GalleryVerticalEnd } from "lucide-react";
 
-const LoginPage = () => {
+const SignupPage = () => {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
@@ -11,10 +15,10 @@ const LoginPage = () => {
           </div>
           Shoemerce Inc.
         </a>
-        <LoginForm />
+        <ForgotPasswordForm />
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default SignupPage;
