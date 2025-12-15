@@ -33,8 +33,6 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -47,15 +45,19 @@ export function LoginForm({
 
   const onSubmit = (data: z.infer<typeof loginFormSchema>) => {
     toast.loading("Logging in...");
-    startTransition(() =>
-      signInEmailAction(data).then((result) => {
-        console.log(result);
-        if (result?.code) {
-          toast.dismiss();
-          toast.error(result.message || "Something went wrong");
-        }
-      })
-    );
+
+    startTransition(async () => {
+      const { error } = await signInEmailAction(data);
+
+      if (error) {
+        toast.dismiss();
+        toast.error(error);
+      } else {
+        toast.dismiss();
+        toast.success("Logged in successfully!");
+        redirect("/");
+      }
+    });
   };
 
   return (

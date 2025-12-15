@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { signupFormSchema } from "@/schemas";
 import { signupEmailAction } from "@/actions/auth/signup";
+import { redirect } from "next/navigation";
 
 export function SignupForm({
   className,
@@ -45,24 +46,34 @@ export function SignupForm({
   });
 
   const onSubmit = async (data: z.infer<typeof signupFormSchema>) => {
-    console.log(data);
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      classNames: {
-        content: "flex flex-col gap-2",
-      },
-      style: {
-        "--border-radius": "calc(var(--radius)  + 4px)",
-      } as React.CSSProperties,
+    // toast("You submitted the following values:", {
+    //   description: (
+    //     <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
+    //       <code>{JSON.stringify(data, null, 2)}</code>
+    //     </pre>
+    //   ),
+    //   position: "bottom-right",
+    //   classNames: {
+    //     content: "flex flex-col gap-2",
+    //   },
+    //   style: {
+    //     "--border-radius": "calc(var(--radius)  + 4px)",
+    //   } as React.CSSProperties,
+    // });
+
+    startTransition(async () => {
+      toast.loading("Signing up...");
+      const { error, success } = await signupEmailAction(data);
+
+      if (error) {
+        toast.dismiss();
+        toast.error(error);
+      } else {
+        toast.dismiss();
+        toast.success(success || "Signed up successfully!");
+        redirect("/login");
+      }
     });
-    const response = await signupEmailAction(data);
-    console.log(response);
-    return response;
   };
 
   return (
@@ -133,7 +144,9 @@ export function SignupForm({
               />
 
               <Field>
-                <Button type="submit">Sign up</Button>
+                <Button disabled={isPending} type="submit">
+                  Sign up
+                </Button>
                 <FieldDescription className="text-center">
                   Have an account? <Link href="/login">Login</Link>
                 </FieldDescription>

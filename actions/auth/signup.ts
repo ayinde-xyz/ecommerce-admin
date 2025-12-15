@@ -10,18 +10,15 @@ export async function signupEmailAction(
 ) {
   const { name, email, password } = data;
   try {
-    const res = await auth.api.signUpEmail({
+    await auth.api.signUpEmail({
       body: {
         name,
         email,
         password,
       },
-      asResponse: true,
     });
 
-    if (res.ok) {
-      return { success: "Sign Up successful" };
-    }
+    return { success: "Sign Up successful" };
   } catch (err) {
     if (err instanceof APIError) {
       const errCode = err.body ? (err.body.code as ErrorCode) : "UNKNOWN";

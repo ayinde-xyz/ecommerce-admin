@@ -10,23 +10,14 @@ export async function signInEmailAction(data: z.infer<typeof loginFormSchema>) {
   const { email, password } = data;
 
   try {
-    const res = await auth.api.signInEmail({
+    await auth.api.signInEmail({
       body: {
         email,
         password,
       },
-      asResponse: true,
     });
 
-    const result = await res.clone().json();
-
-    if (!res.ok) {
-      return result;
-    }
-
-    if (res.ok) {
-      redirect("/");
-    }
+    return { error: null };
   } catch (err) {
     if (err instanceof APIError) {
       const errCode = err.body ? (err.body.code as ErrorCode) : "UNKNOWN";

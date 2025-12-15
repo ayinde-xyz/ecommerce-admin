@@ -1,8 +1,4 @@
-import {
-  ForgotPasswordForm,
-  PasswordResetForm,
-} from "@/components/auth/password-reset";
-import { SignupForm } from "@/components/auth/signup-form";
+import { ForgotPasswordForm } from "@/components/auth/password-reset";
 import { GalleryVerticalEnd } from "lucide-react";
 
 const SignupPage = () => {
