@@ -18,13 +18,15 @@ export const auth = betterAuth({
     expiresIn: 60 * 60,
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url }) => {
+      const link = new URL(url);
+      link.searchParams.set("callbackUrl", "/verify");
       console.log("Link url", url);
       await sendEmailAction({
         to: user.email,
         subject: "Verify your email address",
         meta: {
           description: "Click the link below to verify your email address.",
-          link: String(url),
+          link: String(link),
         },
       });
 
