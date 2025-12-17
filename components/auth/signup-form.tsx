@@ -71,7 +71,7 @@ export function SignupForm({
       } else {
         toast.dismiss();
         toast.success(success || "Signed up successfully!");
-        redirect("/login");
+        redirect("/auth/login");
       }
     });
   };
@@ -148,7 +148,7 @@ export function SignupForm({
                   Sign up
                 </Button>
                 <FieldDescription className="text-center">
-                  Have an account? <Link href="/login">Login</Link>
+                  Have an account? <Link href="/auth/login">Login</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

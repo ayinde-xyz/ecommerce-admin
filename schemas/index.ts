@@ -12,3 +12,6 @@ export const signupFormSchema = z.object({
 export const passwordResetSchema = z.object({
   email: z.email({ error: "Invalid email address." }),
 });
+export const verificationFormSchema = z.object({
+  email: z.email({ error: "Invalid email address." }),
+});

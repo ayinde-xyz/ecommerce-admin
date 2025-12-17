@@ -15,7 +15,7 @@ export default async function Dashboard({
     headers: await headers(),
   });
   if (!session) {
-    redirect("/login");
+    redirect("/auth/login");
   }
 
   const { storeId } = await params;

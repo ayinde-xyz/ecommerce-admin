@@ -23,24 +23,3 @@ export const config = {
   // Apply middleware to these routes
   matcher: ["/dashboard", "/auth/:path*"],
 };
-
-// import { NextRequest, NextResponse } from "next/server";
-// import { headers } from "next/headers";
-// import { auth } from "@/lib/auth";
-// export async function proxy(request: NextRequest) {
-//   const session = await auth.api.getSession({
-//     headers: await headers(),
-//   });
-//   console.log("MIDDLEWARE SESSION", session);
-//   // THIS IS NOT SECURE!
-//   // This is the recommended approach to optimistically redirect users
-//   // We recommend handling auth checks in each page/route
-//   if (!session) {
-//     return NextResponse.redirect(new URL("/login", request.url));
-//   }
-//   return NextResponse.next();
-// }
-// export const config = {
-//   // Required for auth.api calls
-//   matcher: ["/", "/login"], // Specify the routes the middleware applies to
-// };

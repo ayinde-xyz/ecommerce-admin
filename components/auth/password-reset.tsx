@@ -96,7 +96,7 @@ export function ForgotPasswordForm({
               <Field>
                 <Button type="submit">Send Reset Email</Button>
                 <FieldDescription className="text-center">
-                  Don't Have an account <Link href="/signup">Sign up</Link>
+                  Don't Have an account <Link href="/auth/signup">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
