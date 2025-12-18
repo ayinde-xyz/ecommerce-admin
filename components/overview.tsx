@@ -38,7 +38,7 @@ const chartConfig = {
 
 export const Overview: React.FC<OverviewProps> = ({ data }) => {
   return (
-    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+    <ChartContainer config={chartConfig} className="min-h-50 w-full">
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
@@ -56,7 +56,17 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
           tickFormatter={(value) => `$${value}`}
         />
         {/* <Legend /> */}
-        <ChartTooltip content={<ChartTooltipContent />} />
+        <ChartTooltip
+          content={
+            <ChartTooltipContent
+              active={false}
+              payload={[]}
+              coordinate={undefined}
+              accessibilityLayer={false}
+              activeIndex={undefined}
+            />
+          }
+        />
         <Bar dataKey="total" fill="var(--color-total)" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ChartContainer>

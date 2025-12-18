@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.0.0",
-  "engineVersion": "0c19ccc313cf9911a90d99d2ac2eb0280c76c513",
+  "clientVersion": "7.1.0",
+  "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Store {\n  id         String      @id @default(uuid())\n  name       String\n  userId     String\n  billboards Billboard[] @relation(\"StoreToBillboard\")\n  categories Category[]  @relation(\"StoreToCategory\")\n  sizes      Size[]      @relation(\"StoreToSize\")\n  colors     Color[]     @relation(\"StoreToColor\")\n  products   Product[]   @relation(\"StoreToProduct\")\n  orders     Order[]     @relation(\"StoreToOrder\")\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n}\n\nmodel Billboard {\n  id         String     @id @default(uuid())\n  storeId    String\n  store      Store      @relation(\"StoreToBillboard\", fields: [storeId], references: [id])\n  label      String\n  imageUrl   String\n  categories Category[]\n  createdAt  DateTime   @default(now())\n  updatedAt  DateTime   @updatedAt\n\n  @@index([storeId])\n}\n\nmodel Category {\n  id          String    @id @default(uuid())\n  storeId     String\n  store       Store     @relation(\"StoreToCategory\", fields: [storeId], references: [id])\n  billboardId String\n  billboard   Billboard @relation(fields: [billboardId], references: [id])\n  products    Product[] @relation(\"CategoryToProduct\")\n  name        String\n  createdAt   DateTime  @default(now())\n  updatedAt   DateTime  @updatedAt\n\n  @@index([storeId])\n  @@index([billboardId])\n}\n\nmodel Size {\n  id        String    @id @default(uuid())\n  storeId   String\n  store     Store     @relation(\"StoreToSize\", fields: [storeId], references: [id])\n  name      String\n  value     String\n  products  Product[]\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n\n  @@index([storeId])\n}\n\nmodel Color {\n  id        String    @id @default(uuid())\n  storeId   String\n  store     Store     @relation(\"StoreToColor\", fields: [storeId], references: [id])\n  name      String\n  value     String\n  products  Product[]\n  createdAt DateTime  @default(now())\n  updatedAt DateTime  @updatedAt\n\n  @@index([storeId])\n}\n\nmodel Product {\n  id         String      @id @default(uuid())\n  storeId    String\n  store      Store       @relation(\"StoreToProduct\", fields: [storeId], references: [id])\n  categoryId String\n  category   Category    @relation(\"CategoryToProduct\", fields: [categoryId], references: [id])\n  name       String\n  price      Decimal\n  isFeatured Boolean     @default(false)\n  isArchived Boolean     @default(false)\n  sizeId     String\n  size       Size        @relation(fields: [sizeId], references: [id])\n  colorId    String\n  color      Color       @relation(fields: [colorId], references: [id])\n  images     Image[]\n  orderItems OrderItem[]\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n\n  @@index([storeId])\n  @@index([categoryId])\n  @@index([sizeId])\n  @@index([colorId])\n}\n\nmodel Image {\n  id        String   @id @default(uuid())\n  productId String\n  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)\n  url       String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([productId])\n}\n\nmodel Order {\n  id         String      @id @default(uuid())\n  storeId    String\n  store      Store       @relation(\"StoreToOrder\", fields: [storeId], references: [id])\n  orderItems OrderItem[]\n  isPaid     Boolean     @default(false)\n  phone      String      @default(\"\")\n  address    String      @default(\"\")\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @updatedAt\n\n  @@index([storeId])\n}\n\nmodel OrderItem {\n  id            String  @id @default(uuid())\n  orderId       String\n  orderQuantity Int     @default(1)\n  order         Order   @relation(fields: [orderId], references: [id])\n  productId     String\n  product       Product @relation(fields: [productId], references: [id])\n\n  @@index([orderId])\n  @@index([productId])\n}\n\nmodel User {\n  id                  String      @id @default(uuid())\n  name                String\n  email               String\n  emailVerified       Boolean     @default(false)\n  image               String?\n  createdAt           DateTime    @default(now())\n  updatedAt           DateTime    @default(now()) @updatedAt\n  role                String?\n  banned              Boolean?    @default(false)\n  banReason           String?\n  banExpires          DateTime?\n  twoFactorEnabled    Boolean?    @default(false)\n  phoneNumber         String?\n  phoneNumberVerified Boolean?\n  username            String?\n  displayUsername     String?\n  sessions            Session[]\n  accounts            Account[]\n  twofactors          TwoFactor[]\n\n  @@unique([email])\n  @@unique([phoneNumber])\n  @@unique([username])\n  @@map(\"user\")\n}\n\nmodel Session {\n  id             String   @id @default(uuid())\n  expiresAt      DateTime\n  token          String\n  createdAt      DateTime @default(now())\n  updatedAt      DateTime @updatedAt\n  ipAddress      String?\n  userAgent      String?\n  userId         String\n  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n  impersonatedBy String?\n\n  @@unique([token])\n  @@map(\"session\")\n}\n\nmodel Account {\n  id                    String    @id @default(uuid())\n  accountId             String\n  providerId            String\n  userId                String\n  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  accessToken           String?\n  refreshToken          String?\n  idToken               String?\n  accessTokenExpiresAt  DateTime?\n  refreshTokenExpiresAt DateTime?\n  scope                 String?\n  password              String?\n  createdAt             DateTime  @default(now())\n  updatedAt             DateTime  @updatedAt\n\n  @@map(\"account\")\n}\n\nmodel Verification {\n  id         String   @id @default(uuid())\n  identifier String\n  value      String\n  expiresAt  DateTime\n  createdAt  DateTime @default(now())\n  updatedAt  DateTime @default(now()) @updatedAt\n\n  @@map(\"verification\")\n}\n\nmodel TwoFactor {\n  id          String @id\n  secret      String\n  backupCodes String\n  userId      String\n  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@map(\"twoFactor\")\n}\n",
   "runtimeDataModel": {
@@ -62,7 +62,7 @@ export interface PrismaClientConstructor {
    * const stores = await prisma.store.findMany()
    * ```
    * 
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+   * Read more in our [docs](https://pris.ly/d/client).
    */
 
   new <
@@ -84,7 +84,7 @@ export interface PrismaClientConstructor {
  * const stores = await prisma.store.findMany()
  * ```
  * 
- * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+ * Read more in our [docs](https://pris.ly/d/client).
  */
 
 export interface PrismaClient<
@@ -113,7 +113,7 @@ export interface PrismaClient<
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -125,7 +125,7 @@ export interface PrismaClient<
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -136,7 +136,7 @@ export interface PrismaClient<
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -148,7 +148,7 @@ export interface PrismaClient<
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 
