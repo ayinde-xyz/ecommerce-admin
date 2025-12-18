@@ -1,5 +1,5 @@
 "use client";
-import { signIn } from "@/lib/auth-client";
+import { sendVerificationEmail, signIn } from "@/lib/auth-client";
 import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -28,11 +28,13 @@ import { verificationFormSchema } from "@/schemas";
 import { signInEmailAction } from "@/actions/auth/login";
 import { redirect } from "next/navigation";
 import { ErrorCode } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 export function VerifyEmailForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof verificationFormSchema>>({
@@ -42,7 +44,32 @@ export function VerifyEmailForm({
     },
   });
 
-  const onSubmit = (data: z.infer<typeof verificationFormSchema>) => {};
+  const onSubmit = async (data: z.infer<typeof verificationFormSchema>) => {
+    const { email } = data;
+    startTransition(async () => {
+      await sendVerificationEmail({
+        email,
+        callbackURL: "/auth/verify",
+        fetchOptions: {
+          onRequest: () => {
+            toast.loading("Sending verification email...");
+          },
+          onError: (error) => {
+            toast.dismiss();
+            toast.error(
+              `Error sending verification email: ${error.error.message}`
+            );
+          },
+          onSuccess: () => {
+            toast.dismiss();
+            toast.success("Verification email sent. Please check your inbox.");
+            router.push("/auth/verify/success");
+          },
+        },
+      });
+      toast.success("Verification email sent. Please check your inbox.");
+    });
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -50,7 +77,7 @@ export function VerifyEmailForm({
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Verify your Email</CardTitle>
           <CardDescription>
-            Please check your email for a verification link to continue.
+            Please request a new Verification Email to continue.
           </CardDescription>
         </CardHeader>
         <CardContent>

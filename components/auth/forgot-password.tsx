@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn } from "@/lib/auth-client";
+import { requestPasswordReset, signIn } from "@/lib/auth-client";
 import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -26,41 +26,51 @@ import * as z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { passwordResetSchema } from "@/schemas";
+import { forgotPasswordSchema } from "@/schemas";
 import { signupEmailAction } from "@/actions/auth/signup";
+import { useRouter } from "next/navigation";
 
 export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof passwordResetSchema>>({
-    resolver: zodResolver(passwordResetSchema),
+  const form = useForm<z.infer<typeof forgotPasswordSchema>>({
+    resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof passwordResetSchema>) => {
-    console.log(data);
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      classNames: {
-        content: "flex flex-col gap-2",
-      },
-      style: {
-        "--border-radius": "calc(var(--radius)  + 4px)",
-      } as React.CSSProperties,
+  const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
+    const { email } = data;
+
+    startTransition(async () => {
+      await requestPasswordReset({
+        email,
+        redirectTo: "/auth/reset-password",
+        fetchOptions: {
+          onRequest: () => {
+            toast.loading("Sending password reset email...");
+          },
+          onError: (error) => {
+            toast.dismiss();
+            toast.error(
+              `Error sending password reset email: ${error.error.message}`
+            );
+          },
+          onSuccess: () => {
+            toast.dismiss();
+            toast.success(
+              "Password reset email sent! Please check your inbox."
+            );
+            router.push("/auth/forgot-password/success");
+          },
+        },
+      });
     });
-    const response = await signupEmailAction(data);
-    console.log(response);
-    return response;
   };
 
   return (
@@ -68,7 +78,9 @@ export function ForgotPasswordForm({
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Forgot Password</CardTitle>
-          <CardDescription></CardDescription>
+          <CardDescription>
+            Please enter your Email to receive a password reset link.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -94,7 +106,9 @@ export function ForgotPasswordForm({
               />
 
               <Field>
-                <Button type="submit">Send Reset Email</Button>
+                <Button type="submit" disabled={isPending}>
+                  Send Reset Link
+                </Button>
                 <FieldDescription className="text-center">
                   Don't Have an account <Link href="/auth/signup">Sign up</Link>
                 </FieldDescription>

@@ -1,7 +1,7 @@
 import prismadb from "@/lib/prismadb";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
-import { useParams } from "next/navigation";
+
 import { NextResponse } from "next/server";
 
 export async function POST(

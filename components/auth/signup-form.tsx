@@ -28,13 +28,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { signupFormSchema } from "@/schemas";
 import { signupEmailAction } from "@/actions/auth/signup";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
@@ -70,8 +71,8 @@ export function SignupForm({
         toast.error(error);
       } else {
         toast.dismiss();
-        toast.success(success || "Signed up successfully!");
-        redirect("/auth/login");
+        toast.success("Registration Complete, Please verify your email");
+        router.push("/auth/signup/success");
       }
     });
   };

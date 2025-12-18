@@ -1,7 +1,6 @@
 import { VerifyEmailForm } from "@/components/auth/verify-email";
 import { GalleryVerticalEnd } from "lucide-react";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 interface PageProps {
   searchParams: Promise<{ error: string }>;
@@ -10,13 +9,7 @@ interface PageProps {
 export default async function Page({ searchParams }: PageProps) {
   const error = (await searchParams).error;
 
-  if (!error) redirect("/dashboard");
-
-  if (error === "invalid_token" || error === "expired_token") {
-    toast.error(
-      "Your verification link is invalid or has expired. Please request a new verification email."
-    );
-  }
+  if (!error) redirect("/dashboard/[storeID]");
 
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
@@ -27,10 +20,10 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
           Shoemerce Inc.
         </a>
-        <p>
-          <span className="capitalize">
-            {error.replace(/_/g, " ").replace(/-/g, " ")}
-          </span>{" "}
+        <p className="text-center text-lg text-red-600 capitalize">
+          {error === "invalid_token" || error === "expired_token"
+            ? "Invalid or expired verification token."
+            : error.replace(/_/g, " ").replace(/-/g, " ")}
         </p>
         <VerifyEmailForm />
       </div>

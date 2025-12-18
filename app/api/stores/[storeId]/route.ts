@@ -1,7 +1,6 @@
 import { auth } from "@/lib/auth";
 import prismadb from "@/lib/prismadb";
 import { headers } from "next/headers";
-import { useParams } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export async function PATCH(
