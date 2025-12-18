@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Billboard, Category } from "@prisma/client";
+import { Billboard, Category } from "@/app/generated/prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
