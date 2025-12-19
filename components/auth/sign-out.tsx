@@ -1,7 +1,7 @@
 "use client";
-import { signOut, useSession } from "@/lib/auth-client";
-import { redirect, useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { deleteUser, signOut, useSession } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -13,11 +13,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 export const SignOut = () => {
   const session = useSession();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const getInitials = (name?: string | null, email?: string | null) => {
     if (name) {
@@ -36,6 +49,28 @@ export const SignOut = () => {
     }
 
     return "U";
+  };
+
+  const handleDeleteAccount = async () => {
+    await deleteUser({
+      callbackURL: "/auth/delete/success",
+      fetchOptions: {
+        onRequest: () => {
+          setIsDeleting(true);
+          toast.loading("Deleting account...");
+        },
+        onError: (error) => {
+          setIsDeleting(false);
+          toast.dismiss();
+          toast.error(`Error deleting account: ${error.error.message}`);
+        },
+        onSuccess: () => {
+          setIsDeleting(false);
+          toast.dismiss();
+          toast.success("Check your email to confirm account deletion.");
+        },
+      },
+    });
   };
 
   const handleSignOut = async () => {
@@ -58,37 +93,73 @@ export const SignOut = () => {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          size="icon"
-          variant={"ghost"}
-          disabled={isPending}
-          className="btn btn-primary">
-          <Avatar>
-            <AvatarImage src={session?.data?.user?.image || ""} />
-            <AvatarFallback>
-              {getInitials(
-                session?.data?.user?.name,
-                session?.data?.user?.email
-              )}
-            </AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="start">
-        <DropdownMenuGroup>
+    <>
+      {/* <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+        <AlertDialogTrigger asChild>
           <DropdownMenuItem className="text-red-600">
             Delete account
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem disabled={isPending} onClick={handleSignOut}>
-            Log out
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+        </AlertDialogTrigger>
 
-        <DropdownMenuGroup></DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter className="flex gap-2">
+            <AlertDialogCancel asChild>
+              <Button disabled={isDeleting} variant="outline">
+                Cancel
+              </Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button disabled={isDeleting} variant="destructive">
+                Continue
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog> */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            size="icon"
+            variant={"ghost"}
+            disabled={isPending}
+            className="btn btn-primary">
+            <Avatar>
+              <AvatarImage src={session?.data?.user?.image || ""} />
+              <AvatarFallback>
+                {getInitials(
+                  session?.data?.user?.name,
+                  session?.data?.user?.email
+                )}
+              </AvatarFallback>
+            </Avatar>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuGroup>
+            <DropdownMenuItem
+              onClick={() => {
+                setIsAlertOpen(false);
+                handleDeleteAccount();
+              }}
+              className="text-red-600">
+              Delete account
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled={isPending} onClick={handleSignOut}>
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 };

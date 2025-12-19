@@ -44,6 +44,21 @@ export const auth = betterAuth({
       // Implement your email sending logic here
     },
   },
+  user: {
+    deleteUser: {
+      enabled: true,
+      sendDeleteAccountVerification: async ({ user, url }) => {
+        await sendEmailAction({
+          to: user.email,
+          subject: "Confirm account deletion",
+          meta: {
+            description: "Click the link below to confirm account deletion.",
+            link: url,
+          },
+        });
+      },
+    },
+  },
   advanced: {
     database: {
       generateId: false,

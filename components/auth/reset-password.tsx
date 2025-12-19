@@ -17,10 +17,8 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { SocialLogin } from "./social-login";
 import Link from "next/link";
 import * as z from "zod";
 import { Controller, useForm } from "react-hook-form";
@@ -51,7 +49,6 @@ export function ResetPasswordForm({
   });
 
   const onSubmit = (data: z.infer<typeof resetPasswordSchema>) => {
-    console.log("i ma didi");
     const { password } = data;
     startTransition(async () => {
       await resetPassword({
@@ -101,14 +98,21 @@ export function ResetPasswordForm({
                 )}
               />
               <Controller
-                name="password"
+                name="confirmPassword"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field>
                     <div className="flex items-center">
-                      <FieldLabel>Confirm Password</FieldLabel>
+                      <FieldLabel htmlFor="confirmPassword">
+                        Confirm Password
+                      </FieldLabel>
                     </div>
-                    <Input {...field} id="password" type="password" required />
+                    <Input
+                      {...field}
+                      id="confirmPassword"
+                      type="password"
+                      required
+                    />
                     <FieldError errors={[fieldState.error]} />
                   </Field>
                 )}
@@ -116,7 +120,7 @@ export function ResetPasswordForm({
 
               <Field>
                 <Button disabled={isPending} type="submit">
-                  Reset Password
+                  {isPending ? "Resetting..." : "Reset Password"}
                 </Button>
                 <FieldDescription className="text-center">
                   Don't have an account?{" "}
