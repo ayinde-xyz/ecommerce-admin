@@ -43,44 +43,44 @@ const MainNav = ({
 
   const routes = [
     {
-      href: `/${params.storeId}`,
+      href: `${params.storeId}`,
       label: "Overview",
-      active: pathname === `/${params.storeId}`,
+      active: pathname === `/dashboard/${params.storeId}`,
     },
     {
-      href: `/${params.storeId}/billboards`,
+      href: `/dashboard/${params.storeId}/billboards`,
       label: "Billboard",
-      active: pathname === `/${params.storeId}/billboards`,
+      active: pathname === `/dashboard/${params.storeId}/billboards`,
     },
     {
-      href: `/${params.storeId}/categories`,
+      href: `/dashboard/${params.storeId}/categories`,
       label: "Categories",
-      active: pathname === `/${params.storeId}/categories`,
+      active: pathname === `/dashboard/${params.storeId}/categories`,
     },
     {
-      href: `/${params.storeId}/sizes`,
+      href: `/dashboard/${params.storeId}/sizes`,
       label: "Sizes",
-      active: pathname === `/${params.storeId}/sizes`,
+      active: pathname === `/dashboard/${params.storeId}/sizes`,
     },
     {
-      href: `/${params.storeId}/colors`,
+      href: `/dashboard/${params.storeId}/colors`,
       label: "Colors",
-      active: pathname === `/${params.storeId}/colors`,
+      active: pathname === `/dashboard/${params.storeId}/colors`,
     },
     {
-      href: `/${params.storeId}/products`,
+      href: `/dashboard/${params.storeId}/products`,
       label: "Products",
-      active: pathname === `/${params.storeId}/products`,
+      active: pathname === `/dashboard/${params.storeId}/products`,
     },
     {
-      href: `/${params.storeId}/orders`,
+      href: `/dashboard/${params.storeId}/orders`,
       label: "Orders",
-      active: pathname === `/${params.storeId}/orders`,
+      active: pathname === `/dashboard/${params.storeId}/orders`,
     },
     {
-      href: `/${params.storeId}/settings`,
+      href: `/dashboard/${params.storeId}/settings`,
       label: "Settings",
-      active: pathname === `/${params.storeId}/settings`,
+      active: pathname === `/dashboard/${params.storeId}/settings`,
     },
   ];
 

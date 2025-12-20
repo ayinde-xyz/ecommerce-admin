@@ -68,7 +68,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
       }
 
       router.refresh();
-      router.push(`/${params.storeId}/billboards`);
+      router.push(`/dashboard/${params.storeId}/billboards`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong");
@@ -85,7 +85,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         `/api/${params.storeId}/billboards/${params.billboardId}`
       );
       router.refresh();
-      router.push(`/${params.storeId}/billboards`);
+      router.push(`/dashboard/${params.storeId}/billboards`);
       toast.success("Billboard deleted.");
     } catch (error: any) {
       toast.error(
@@ -140,7 +140,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
               </FormItem>
             )}
           />
-          <div className="w-[300px]">
+          <div className="w-75]">
             <FormField
               control={form.control}
               name="label"

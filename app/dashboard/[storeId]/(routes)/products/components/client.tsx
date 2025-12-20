@@ -23,7 +23,10 @@ const ProductClient: React.FC<ProductClientProps> = ({ data }) => {
           title={`Products (${data.length})`}
           description="Manage product for your store"
         />
-        <Button onClick={() => router.push(`/${params.storeId}/products/new`)}>
+        <Button
+          onClick={() =>
+            router.push(`/dashboard/${params.storeId}/products/new`)
+          }>
           <Plus className="h-4 w-4 mr-2" />
           <span className="sm:inline-block hidden">Add New</span>
         </Button>

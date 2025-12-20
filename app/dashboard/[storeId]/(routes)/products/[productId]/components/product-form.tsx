@@ -107,7 +107,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       }
 
       router.refresh();
-      router.push(`/${params.storeId}/products`);
+      router.push(`/dashboard/${params.storeId}/products`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong");
@@ -122,7 +122,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
       router.refresh();
-      router.push(`/${params.storeId}/products`);
+      router.push(`/dashboard/${params.storeId}/products`);
       toast.success("Product deleted.");
     } catch (error: any) {
       toast.error("Something went wrong. Please try again or contact support.");

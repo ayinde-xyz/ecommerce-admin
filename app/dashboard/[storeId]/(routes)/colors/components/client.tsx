@@ -23,7 +23,10 @@ const ColorsClient: React.FC<ColorsClientProps> = ({ data }) => {
           title={`Colors (${data.length})`}
           description="Manage colors for your store"
         />
-        <Button onClick={() => router.push(`/${params.storeId}/colors/new`)}>
+        <Button
+          onClick={() =>
+            router.push(`/dashboard/${params.storeId}/colors/new`)
+          }>
           <Plus className="h-4 w-4 mr-2" />
           <span className="sm:inline-block hidden">Add New</span>
         </Button>

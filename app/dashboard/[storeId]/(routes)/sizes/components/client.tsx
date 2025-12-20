@@ -23,7 +23,8 @@ const SizesClient: React.FC<SizesClientProps> = ({ data }) => {
           title={`Sizes (${data.length})`}
           description="Manage sizes for your store"
         />
-        <Button onClick={() => router.push(`/${params.storeId}/sizes/new`)}>
+        <Button
+          onClick={() => router.push(`/dashboard/${params.storeId}/sizes/new`)}>
           <Plus className="h-4 w-4 mr-2" />
           <span className="sm:inline-block hidden">Add New</span>
         </Button>
