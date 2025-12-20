@@ -31,6 +31,7 @@ import {
 } from "./ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "./ui/button";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 
 const MainNav = ({
   className,
@@ -43,7 +44,7 @@ const MainNav = ({
 
   const routes = [
     {
-      href: `${params.storeId}`,
+      href: `/dashboard/${params.storeId}`,
       label: "Overview",
       active: pathname === `/dashboard/${params.storeId}`,
     },
@@ -87,86 +88,97 @@ const MainNav = ({
   const ITEMS_TO_DISPLAY = 2;
 
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <Link href={routes[0].href}>{routes[0].label}</Link>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        {routes.length > ITEMS_TO_DISPLAY ? (
-          <>
-            <BreadcrumbItem>
-              {isDesktop ? (
-                <DropdownMenu open={open} onOpenChange={setOpen}>
-                  <DropdownMenuTrigger
-                    className="flex items-center gap-1"
-                    aria-label="Toggle menu">
-                    <BreadcrumbEllipsis className="h-4 w-4" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
-                    {routes.slice(1, -1).map((route, index) => (
-                      <DropdownMenuItem key={index}>
-                        <Link href={route.href ? route.href : "#"}>
-                          {route.label}
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Drawer open={open} onOpenChange={setOpen}>
-                  <DrawerTrigger aria-label="Toggle Menu">
-                    <BreadcrumbEllipsis className="h-4 w-4" />
-                  </DrawerTrigger>
-                  <DrawerContent>
-                    <DrawerHeader className="text-left">
-                      <DrawerTitle>Navigate to</DrawerTitle>
-                      <DrawerDescription>
-                        Select a page to navigate to.
-                      </DrawerDescription>
-                    </DrawerHeader>
-                    <div className="grid gap-1 px-4">
-                      {routes.slice(1, -1).map((route, index) => (
-                        <Link
-                          key={index}
-                          href={route.href ? route.href : "#"}
-                          className="py-1 text-sm">
-                          {route.label}
-                        </Link>
-                      ))}
-                    </div>
-                    <DrawerFooter className="pt-4">
-                      <DrawerClose asChild>
-                        <Button variant="outline">Close</Button>
-                      </DrawerClose>
-                    </DrawerFooter>
-                  </DrawerContent>
-                </Drawer>
-              )}
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-          </>
-        ) : null}
-        {routes.slice(-ITEMS_TO_DISPLAY + 1).map((route, index) => (
-          <BreadcrumbItem key={index}>
-            {route.href ? (
-              <>
-                <BreadcrumbLink
-                  asChild
-                  className="max-w-20 truncate md:max-w-none">
-                  <Link href={route.href}>{route.label}</Link>
-                </BreadcrumbLink>
-                <BreadcrumbSeparator />
-              </>
-            ) : (
-              <BreadcrumbPage className="max-w-20 truncate md:max-w-none">
-                {route.label}
-              </BreadcrumbPage>
-            )}
-          </BreadcrumbItem>
-        ))}
-      </BreadcrumbList>
-    </Breadcrumb>
+    // <Breadcrumb>
+    //   <BreadcrumbList>
+    //     <BreadcrumbItem>
+    //       <Link href={routes[0].href}>{routes[0].label}</Link>
+    //     </BreadcrumbItem>
+    //     <BreadcrumbSeparator />
+    //     {routes.length > ITEMS_TO_DISPLAY ? (
+    //       <>
+    //         <BreadcrumbItem>
+    //           {isDesktop ? (
+    //             <DropdownMenu open={open} onOpenChange={setOpen}>
+    //               <DropdownMenuTrigger
+    //                 className="flex items-center gap-1"
+    //                 aria-label="Toggle menu">
+    //                 <BreadcrumbEllipsis className="h-4 w-4" />
+    //               </DropdownMenuTrigger>
+    //               <DropdownMenuContent align="start">
+    //                 {routes.slice(1, -1).map((route, index) => (
+    //                   <DropdownMenuItem key={index}>
+    //                     <Link href={route.href ? route.href : "#"}>
+    //                       {route.label}
+    //                     </Link>
+    //                   </DropdownMenuItem>
+    //                 ))}
+    //               </DropdownMenuContent>
+    //             </DropdownMenu>
+    //           ) : (
+    //             <Drawer open={open} onOpenChange={setOpen}>
+    //               <DrawerTrigger aria-label="Toggle Menu">
+    //                 <BreadcrumbEllipsis className="h-4 w-4" />
+    //               </DrawerTrigger>
+    //               <DrawerContent>
+    //                 <DrawerHeader className="text-left">
+    //                   <DrawerTitle>Navigate to</DrawerTitle>
+    //                   <DrawerDescription>
+    //                     Select a page to navigate to.
+    //                   </DrawerDescription>
+    //                 </DrawerHeader>
+    //                 <div className="grid gap-1 px-4">
+    //                   {routes.slice(1, -1).map((route, index) => (
+    //                     <Link
+    //                       key={index}
+    //                       href={route.href ? route.href : "#"}
+    //                       className="py-1 text-sm">
+    //                       {route.label}
+    //                     </Link>
+    //                   ))}
+    //                 </div>
+    //                 <DrawerFooter className="pt-4">
+    //                   <DrawerClose asChild>
+    //                     <Button variant="outline">Close</Button>
+    //                   </DrawerClose>
+    //                 </DrawerFooter>
+    //               </DrawerContent>
+    //             </Drawer>
+    //           )}
+    //         </BreadcrumbItem>
+    //         <BreadcrumbSeparator />
+    //       </>
+    //     ) : null}
+    //     {routes.slice(-ITEMS_TO_DISPLAY + 1).map((route, index) => (
+    //       <BreadcrumbItem key={index}>
+    //         {route.href ? (
+    //           <>
+    //             <BreadcrumbLink
+    //               asChild
+    //               className="max-w-20 truncate md:max-w-none">
+    //               <Link href={route.href}>{route.label}</Link>
+    //             </BreadcrumbLink>
+    //             <BreadcrumbSeparator />
+    //           </>
+    //         ) : (
+    //           <BreadcrumbPage className="max-w-20 truncate md:max-w-none">
+    //             {route.label}
+    //           </BreadcrumbPage>
+    //         )}
+    //       </BreadcrumbItem>
+    //     ))}
+    //   </BreadcrumbList>
+    // </Breadcrumb>
+    <SidebarMenu>
+      {routes.map((route) => (
+        <SidebarMenuItem key={route.href}>
+          <SidebarMenuButton asChild>
+            <Link href={route.href}>
+              <span>{route.label}</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
     // <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
     //   {routes.map((route) => (
     //     <Link
