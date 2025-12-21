@@ -66,9 +66,7 @@ const StoreSwitcher = ({ className, items = [] }: StoreSwitcherProps) => {
           aria-label="Select a store"
           className={cn("sm:gap-2 gap-0 justify-between", className)}>
           <StoreIcon className="mr-2 h-4 w-4" />
-          <span className="hidden sm:inline-block">
-            {currentStore?.label || "Select a store"}
-          </span>
+          <span className="">{currentStore?.label || "Select a store"}</span>
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

@@ -36,11 +36,7 @@ export default async function Dashboard({
   }
 
   return (
-    <SidebarProvider
-      style={{
-        "--sidebar-width": "20rem",
-        "--sidebar-width-mobile": "100%",
-      } as React.CSSProperties}>
+    <SidebarProvider>
       <AppSidebar />
       <main className="w-full">
         <Navbar />

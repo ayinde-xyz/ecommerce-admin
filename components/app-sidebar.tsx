@@ -12,6 +12,8 @@ import prismadb from "@/lib/prismadb";
 import StoreSwitcher from "./store-switcher";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { SidebarCloseIcon } from "./sidebar-close-icon";
+import { SignOut } from "./auth/sign-out";
 
 export async function AppSidebar() {
   const session = await auth.api.getSession({
@@ -25,8 +27,9 @@ export async function AppSidebar() {
     },
   });
   return (
-    <Sidebar variant="floating">
-      <SidebarHeader>
+    <Sidebar variant="inset">
+      <SidebarHeader className="relative">
+        <SidebarCloseIcon className="absolute right-0" />
         <StoreSwitcher items={stores} />
       </SidebarHeader>
       <SidebarContent>
@@ -40,7 +43,9 @@ export async function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter className="flex flex-col justify-center items-center p-5">
+        <SignOut />
+      </SidebarFooter>
     </Sidebar>
   );
 }
