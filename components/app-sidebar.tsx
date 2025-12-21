@@ -6,6 +6,8 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import MainNav from "./main-nav";
 import prismadb from "@/lib/prismadb";
@@ -28,11 +30,18 @@ export async function AppSidebar() {
   });
   return (
     <Sidebar variant="inset">
-      <SidebarHeader className="relative">
-        <SidebarCloseIcon className="absolute right-0" />
-        <StoreSwitcher items={stores} />
+      <SidebarHeader className=" ml-7">
+        <SidebarMenu>
+            <SidebarMenuItem className="relative h-8">
+          <SidebarCloseIcon className="" />
+          </SidebarMenuItem>
+
+          <StoreSwitcher items={stores} />
+        </SidebarMenu>
+
+        
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="mt-5 ml-7">
         <SidebarGroupLabel>
           <span className="text-lg font-medium">Navigation</span>
         </SidebarGroupLabel>
@@ -43,7 +52,7 @@ export async function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="flex flex-col justify-center items-center p-5">
+      <SidebarFooter className="flex flex-col justify-center items-center pb-10">
         <SignOut />
       </SidebarFooter>
     </Sidebar>

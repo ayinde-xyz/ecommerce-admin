@@ -168,12 +168,12 @@ const MainNav = ({
     //     ))}
     //   </BreadcrumbList>
     // </Breadcrumb>
-    <SidebarMenu>
+    <SidebarMenu className="gap-y-3">
       {routes.map((route) => (
         <SidebarMenuItem key={route.href}>
           <SidebarMenuButton asChild>
             <Link href={route.href}>
-              <span>{route.label}</span>
+              <span className="text-lg ">{route.label}</span>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
