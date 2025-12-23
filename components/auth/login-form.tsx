@@ -87,7 +87,7 @@ export function LoginForm({
                       {...field}
                       id="email"
                       type="email"
-                      placeholder="m@example.com"
+                      placeholder="johndoe@example.com"
                       required
                     />
                     {fieldState.invalid && (
@@ -101,15 +101,22 @@ export function LoginForm({
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field>
-                    <div className="flex items-center">
+                    <div className="flex  text-xs justify-evenly  items-center">
                       <FieldLabel htmlFor="password">Password</FieldLabel>
                       <a
                         href="/auth/forgot-password"
-                        className="ml-auto text-sm underline-offset-4 hover:underline">
-                        Forgot your password?
+                        className="ml-auto underline-offset-4  hover:underline">
+                        Forgot password?
                       </a>
                     </div>
-                    <Input {...field} id="password" type="password" required />
+                    <Input
+                      placeholder="Password(8+ characters)"
+                      {...field}
+                      id="password"
+                      type="password"
+                      required
+                    />
+                    <FieldError errors={[fieldState.error]} />
                   </Field>
                 )}
               />
@@ -119,7 +126,10 @@ export function LoginForm({
                   Login
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/auth/signup">Sign up</a>
+                  Don&apos;t have an account?{" "}
+                  <a className="block sm:inline-block" href="/auth/signup">
+                    Sign up
+                  </a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

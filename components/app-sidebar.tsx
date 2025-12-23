@@ -32,14 +32,12 @@ export async function AppSidebar() {
     <Sidebar variant="inset">
       <SidebarHeader className=" ml-7">
         <SidebarMenu>
-            <SidebarMenuItem className="relative h-8">
-          <SidebarCloseIcon className="" />
+          <SidebarMenuItem className="relative h-12">
+            <SidebarCloseIcon className="" />
           </SidebarMenuItem>
 
           <StoreSwitcher items={stores} />
         </SidebarMenu>
-
-        
       </SidebarHeader>
       <SidebarContent className="mt-5 ml-7">
         <SidebarGroupLabel>

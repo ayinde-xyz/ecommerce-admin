@@ -17,7 +17,6 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { SocialLogin } from "./social-login";
@@ -27,7 +26,6 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { forgotPasswordSchema } from "@/schemas";
-import { signupEmailAction } from "@/actions/auth/signup";
 import { useRouter } from "next/navigation";
 
 export function ForgotPasswordForm({
@@ -95,7 +93,7 @@ export function ForgotPasswordForm({
                       {...field}
                       id="email"
                       type="email"
-                      placeholder="m@example.com"
+                      placeholder="johndoe@example.com"
                       required
                     />
                     {fieldState.invalid && (
@@ -110,7 +108,10 @@ export function ForgotPasswordForm({
                   Send Reset Link
                 </Button>
                 <FieldDescription className="text-center">
-                  Don't Have an account <Link href="/auth/signup">Sign up</Link>
+                  Don't Have an account?{"   "}
+                  <Link className="block sm:inline-block" href="/auth/signup">
+                    Sign up
+                  </Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

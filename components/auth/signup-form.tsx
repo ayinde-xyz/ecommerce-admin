@@ -122,7 +122,7 @@ export function SignupForm({
                       {...field}
                       id="email"
                       type="email"
-                      placeholder="m@example.com"
+                      placeholder="johndoe@example.com"
                       required
                     />
                     {fieldState.invalid && (
@@ -139,7 +139,14 @@ export function SignupForm({
                     <div className="flex items-center">
                       <FieldLabel htmlFor="password">Password</FieldLabel>
                     </div>
-                    <Input {...field} id="password" type="password" required />
+                    <Input
+                      {...field}
+                      id="password"
+                      placeholder="Password(8+ characters)"
+                      type="password"
+                      required
+                    />
+                    <FieldError errors={[fieldState.error]} />
                   </Field>
                 )}
               />

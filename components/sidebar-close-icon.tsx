@@ -11,11 +11,11 @@ export const SidebarCloseIcon = ({
 
   return (
     <Button
-      className={cn(className, "absolute right-4 h-8 w-8")}
+      className={cn(className, "absolute right-4")}
       variant={"ghost"}
       size={"icon-lg"}
       onClick={() => toggleSidebar()}>
-      <X className="h-5-w-5" />
+      <X className="size-8" />
     </Button>
   );
 };
