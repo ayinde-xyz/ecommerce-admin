@@ -5,6 +5,7 @@ import { nextCookies } from "better-auth/next-js";
 import { sendEmailAction } from "@/actions/auth/sendPasswordReset";
 
 export const auth = betterAuth({
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
   database: prismaAdapter(prismadb, {
     provider: "postgresql",
   }),
