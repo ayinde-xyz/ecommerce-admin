@@ -19,7 +19,7 @@ export const SocialLogin = ({ isPending }: Props) => {
       errorCallbackURL: "/auth/login/error",
     });
 
-    console.log("Google sign in result", result);
+    console.log("Google sign in result", result.error, result.data);
 
     // if (result.error) {
     //   toast.dismiss();
