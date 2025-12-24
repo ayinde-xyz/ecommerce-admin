@@ -4,9 +4,26 @@ import prismadb from "./prismadb";
 import { nextCookies } from "better-auth/next-js";
 import { sendEmailAction } from "@/actions/auth/sendPasswordReset";
 
+const baseURL: string | undefined =
+  process.env.VERCEL === "1"
+    ? process.env.VERCEL_ENV === "production"
+      ? process.env.BETTER_AUTH_URL
+      : process.env.VERCEL_ENV === "preview"
+        ? `https://${process.env.VERCEL_URL}`
+        : undefined
+    : undefined;
+
+const cookieDomain: string | undefined =
+  process.env.VERCEL === "1"
+    ? process.env.VERCEL_ENV === "production"
+      ? ".better-auth.com"
+      : process.env.VERCEL_ENV === "preview"
+        ? `.${process.env.VERCEL_URL}`
+        : undefined
+    : undefined;
+
 export const auth = betterAuth({
-  baseURL: "https://ecommerce-admin-silk-ten.vercel.app",
-  trustedOrigins: ["https://ecommerce-admin-silk-ten.vercel.app"],
+  baseURL,
   database: prismaAdapter(prismadb, {
     provider: "postgresql",
   }),
@@ -26,7 +43,7 @@ export const auth = betterAuth({
       });
     },
   },
-   socialProviders: {
+  socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -84,7 +101,6 @@ export const auth = betterAuth({
       enabled: false,
     },
   },
- 
 
   plugins: [nextCookies()],
 });
