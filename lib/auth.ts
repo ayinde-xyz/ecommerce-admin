@@ -84,11 +84,7 @@ export const auth = betterAuth({
       },
     },
   },
-  advanced: {
-    database: {
-      generateId: false,
-    },
-  },
+
   session: {
     expiresIn: 30 * 24 * 60 * 60,
     cookieCache: {
@@ -103,6 +99,16 @@ export const auth = betterAuth({
   },
 
   plugins: [nextCookies()],
+
+  advanced: {
+    database: {
+      generateId: false,
+    },
+    crossSubDomainCookies: {
+      enabled: process.env.NODE_ENV === "production",
+      domain: cookieDomain,
+    },
+  },
 });
 
 export type ErrorCode = keyof typeof auth.$ERROR_CODES | "UNKNOWN";
