@@ -21,7 +21,6 @@ export const SocialLogin = ({ isPending }: Props) => {
       if (result.error) {
         toast.dismiss();
         toast.error(result.error.message || "Something went wrong");
-        return;
       }
 
       toast.dismiss();

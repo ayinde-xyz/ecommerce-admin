@@ -13,7 +13,7 @@ export async function proxy(request: NextRequest) {
 
   // Redirect unauthenticated users trying to access protected routes
   if (!sessionCookie && pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+    return NextResponse.redirect(new URL("/auth/signup", request.url));
   }
 
   return NextResponse.next();
