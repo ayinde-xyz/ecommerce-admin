@@ -13,11 +13,13 @@ type Props = {
 export const SocialLogin = ({ isPending }: Props) => {
   const handleLogin = async (provider: "apple" | "google") => {
     toast.loading("Redirecting to provider...");
-    await signIn.social({
+    const result = await signIn.social({
       provider,
       callbackURL: "/dashboard/[storeId]",
       errorCallbackURL: "/auth/login/error",
     });
+
+    console.log("Google sign in result", result);
 
     // if (result.error) {
     //   toast.dismiss();
