@@ -6,6 +6,7 @@ import { sendEmailAction } from "@/actions/auth/sendPasswordReset";
 
 export const auth = betterAuth({
   baseURL: "https://ecommerce-admin-silk-ten.vercel.app",
+  trustedOrigins: ["https://ecommerce-admin-silk-ten.vercel.app"],
   database: prismaAdapter(prismadb, {
     provider: "postgresql",
   }),
@@ -23,6 +24,12 @@ export const auth = betterAuth({
           link: url,
         },
       });
+    },
+  },
+   socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
   emailVerification: {
@@ -77,12 +84,7 @@ export const auth = betterAuth({
       enabled: false,
     },
   },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    },
-  },
+ 
 
   plugins: [nextCookies()],
 });
