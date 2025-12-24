@@ -6,7 +6,7 @@ export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-   // Redirect unauthenticated users trying to access protected routes
+  // Redirect unauthenticated users trying to access protected routes
   if (!sessionCookie && pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/auth/signup", request.url));
   }
@@ -16,13 +16,10 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard/[storeId]", request.url));
   }
 
- 
-
   return NextResponse.next();
 }
 
 export const config = {
   // Apply middleware to these routes
-  matcher: ["/dashboard", "/auth/:path*"],
-  runtime: "nodejs"
+  matcher: ["/dashboard/:path*", "/auth/:path*"],
 };
