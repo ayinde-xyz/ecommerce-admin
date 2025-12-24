@@ -12,27 +12,20 @@ type Props = {
 
 export const SocialLogin = ({ isPending }: Props) => {
   const handleLogin = async (provider: "apple" | "google") => {
-    try {
-      toast.loading("Signing in...");
-      const result = await signIn.social({
-        provider,
-        callbackURL: "/dashboard/[storeId]",
-      });
+    toast.loading("Redirecting to provider...");
+    await signIn.social({
+      provider,
+      callbackURL: "/dashboard/[storeId]",
+      errorCallbackURL: "/auth/login/error",
+    });
 
-      if (result.error) {
-        toast.dismiss();
-        toast.error(result.error.message || "Something went wrong");
-      }
-
-      toast.dismiss();
-      toast.success("Signed in successfully!");
-    } catch (err) {
-      if (err instanceof APIError) {
-        toast.error(err.message);
-      }
-
-      toast.error("Something went wrong");
-    }
+    // if (result.error) {
+    //   toast.dismiss();
+    //   toast.error(result.error.message || "Something went wrong");
+    // } else {
+    //   toast.dismiss();
+    //   toast.success("Login successful");
+    // }
   };
   return (
     <Field>
