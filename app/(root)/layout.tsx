@@ -12,12 +12,6 @@ export default async function SetupLayout({
     headers: await headers(),
   });
 
-  console.log("Session in root layout", session);
-
-  if (!session) {
-    redirect("/auth/login");
-  }
-
   const userId = session?.user.id;
 
   const store = await prismadb.store.findFirst({

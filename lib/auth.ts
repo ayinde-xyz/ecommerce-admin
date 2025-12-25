@@ -106,7 +106,7 @@ export const auth = betterAuth({
       generateId: false,
     },
     crossSubDomainCookies: {
-      enabled: process.env.NODE_ENV === "production",
+      enabled: true,
       domain: cookieDomain,
     },
     cookies: {
@@ -121,6 +121,10 @@ export const auth = betterAuth({
         },
       },
     },
+    trustedOrigins: [
+      "http://localhost:3000",
+      "https://ecommerce-admin-silk-ten.vercel.app",
+    ],
   },
 });
 
