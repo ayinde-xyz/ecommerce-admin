@@ -16,7 +16,7 @@ const baseURL: string | undefined =
 const cookieDomain: string | undefined =
   process.env.VERCEL === "1"
     ? process.env.VERCEL_ENV === "production"
-      ? ".better-auth.com"
+      ? ".vercel.app"
       : process.env.VERCEL_ENV === "preview"
         ? `.${process.env.VERCEL_URL}`
         : undefined
