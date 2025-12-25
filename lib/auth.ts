@@ -4,14 +4,14 @@ import prismadb from "./prismadb";
 import { nextCookies } from "better-auth/next-js";
 import { sendEmailAction } from "@/actions/auth/sendPasswordReset";
 
-const baseURL: string | undefined =
-  process.env.VERCEL === "1"
-    ? process.env.VERCEL_ENV === "production"
-      ? process.env.BETTER_AUTH_URL
-      : process.env.VERCEL_ENV === "preview"
-        ? `https://${process.env.VERCEL_URL}`
-        : undefined
-    : undefined;
+// const baseURL: string | undefined =
+//   process.env.VERCEL === "1"
+//     ? process.env.VERCEL_ENV === "production"
+//       ? process.env.BETTER_AUTH_URL
+//       : process.env.VERCEL_ENV === "preview"
+//         ? `https://${process.env.VERCEL_URL}`
+//         : undefined
+//     : undefined;
 
 const cookieDomain: string | undefined =
   process.env.VERCEL === "1"
@@ -23,7 +23,7 @@ const cookieDomain: string | undefined =
     : undefined;
 
 export const auth = betterAuth({
-  baseURL,
+  baseURL: process.env.BETTER_AUTH_URL,
   database: prismaAdapter(prismadb, {
     provider: "postgresql",
   }),
