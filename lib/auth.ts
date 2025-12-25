@@ -114,7 +114,7 @@ export const auth = betterAuth({
         name: "session_token",
         attributes: {
           sameSite: "None",
-          domain: "",
+          domain: "ecommerce-admin-silk-ten.vercel.app",
           path: "/",
           secure: true,
           httpOnly: false,
