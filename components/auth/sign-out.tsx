@@ -74,21 +74,23 @@ export const SignOut = () => {
   };
 
   const handleSignOut = async () => {
-    startTransition(() => {
-      toast.promise(
-        signOut({
-          fetchOptions: {
-            onSuccess: () => {
-              router.push("/auth/login"); // redirect to login page
-            },
+    startTransition(async () => {
+      await signOut({
+        fetchOptions: {
+          onRequest: () => {
+            toast.loading("Signing out...");
           },
-        }),
-        {
-          loading: "Signing out...",
-          success: "Signed out successfully!",
-          error: "Error signing out",
-        }
-      );
+          onError: (error) => {
+            toast.dismiss();
+            toast.error(`Error signing out: ${error.error.message}`);
+          },
+          onSuccess: () => {
+            toast.dismiss();
+            toast.success("Signed out successfully!");
+            router.replace("/auth/login");
+          },
+        },
+      });
     });
   };
 
