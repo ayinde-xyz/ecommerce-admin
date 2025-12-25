@@ -109,6 +109,18 @@ export const auth = betterAuth({
       enabled: process.env.NODE_ENV === "production",
       domain: cookieDomain,
     },
+    cookies: {
+      session_token: {
+        name: "session_token",
+        attributes: {
+          sameSite: "None",
+          domain: "",
+          path: "/",
+          secure: true,
+          httpOnly: false,
+        },
+      },
+    },
   },
 });
 
