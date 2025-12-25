@@ -26,7 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { loginFormSchema } from "@/schemas";
 import { signInEmailAction } from "@/actions/auth/login";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { ErrorCode } from "@/lib/auth";
 
 export function LoginForm({
@@ -34,6 +34,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -55,7 +56,7 @@ export function LoginForm({
       } else {
         toast.dismiss();
         toast.success("Logged in successfully!");
-        redirect("/");
+        router.replace("/");
       }
     });
   };

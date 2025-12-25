@@ -15,7 +15,7 @@ export const SocialLogin = ({ isPending }: Props) => {
     toast.loading("Redirecting to provider...");
     const result = await signIn.social({
       provider,
-      callbackURL: "/dashboard/[storeId]",
+      callbackURL: "/",
       errorCallbackURL: "/auth/login/error",
     });
 
