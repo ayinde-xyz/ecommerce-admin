@@ -109,18 +109,18 @@ export const auth = betterAuth({
       enabled: true,
       domain: cookieDomain,
     },
-    cookies: {
-      session_token: {
-        name: "session_token",
-        attributes: {
-          sameSite: "None",
-          domain: "ecommerce-admin-silk-ten.vercel.app",
-          path: "/",
-          secure: true,
-          httpOnly: false,
-        },
-      },
-    },
+    // cookies: {
+    //   session_token: {
+    //     name: "session_token",
+    //     attributes: {
+    //       sameSite: "None",
+    //       domain: "ecommerce-admin-silk-ten.vercel.app",
+
+    //       secure: true,
+    //       httpOnly: false,
+    //     },
+    //   },
+    // },
     trustedOrigins: [
       "http://localhost:3000",
       "https://ecommerce-admin-silk-ten.vercel.app",
