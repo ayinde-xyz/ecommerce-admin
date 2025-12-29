@@ -31,7 +31,12 @@ import {
 } from "./ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "./ui/button";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "./ui/sidebar";
 
 const MainNav = ({
   className,
@@ -41,6 +46,7 @@ const MainNav = ({
   const params = useParams();
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const { toggleSidebar } = useSidebar();
 
   const routes = [
     {
@@ -171,7 +177,7 @@ const MainNav = ({
     <SidebarMenu className="gap-y-3">
       {routes.map((route) => (
         <SidebarMenuItem key={route.href}>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton asChild onClick={() => toggleSidebar()}>
             <Link href={route.href}>
               <span className="text-lg ">{route.label}</span>
             </Link>

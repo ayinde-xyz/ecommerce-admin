@@ -1,5 +1,4 @@
 import { VerifyEmailForm } from "@/components/auth/verify-email";
-import { GalleryVerticalEnd } from "lucide-react";
 import { redirect } from "next/navigation";
 
 interface PageProps {

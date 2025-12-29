@@ -23,6 +23,7 @@ const cookieDomain: string | undefined =
     : undefined;
 
 export const auth = betterAuth({
+  appName: "Wearmerce Admin",
   baseURL: process.env.BETTER_AUTH_URL,
   database: prismaAdapter(prismadb, {
     provider: "postgresql",
@@ -47,6 +48,10 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    },
+    facebook: {
+      clientId: process.env.FACEBOOK_CLIENT_ID as string,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
     },
   },
   emailVerification: {
@@ -109,18 +114,6 @@ export const auth = betterAuth({
       enabled: true,
       domain: cookieDomain,
     },
-    // cookies: {
-    //   session_token: {
-    //     name: "session_token",
-    //     attributes: {
-    //       sameSite: "None",
-    //       domain: "ecommerce-admin-silk-ten.vercel.app",
-
-    //       secure: true,
-    //       httpOnly: false,
-    //     },
-    //   },
-    // },
     trustedOrigins: [
       "http://localhost:3000",
       "https://ecommerce-admin-silk-ten.vercel.app",

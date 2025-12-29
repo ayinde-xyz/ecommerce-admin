@@ -20,7 +20,7 @@ export default async function AuthLayout({
             <GalleryVerticalEnd className="size-4" />
           </div>
           <span className={`text-2xl font-bold ${Amantic.className}`}>
-            SHOEMERCE
+            WEARMERCE
           </span>
         </a>
         {children}

@@ -3,15 +3,14 @@ import { Button } from "../ui/button";
 import { Field } from "../ui/field";
 import { toast } from "sonner";
 import { APIError } from "better-auth";
-import { FaGoogle } from "react-icons/fa";
-import { FaAppleAlt } from "react-icons/fa";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
 
 type Props = {
   isPending: boolean;
 };
 
 export const SocialLogin = ({ isPending }: Props) => {
-  const handleLogin = async (provider: "apple" | "google") => {
+  const handleLogin = async (provider: "facebook" | "google") => {
     try {
       toast.loading("Signing in...");
       const result = await signIn.social({
@@ -40,9 +39,9 @@ export const SocialLogin = ({ isPending }: Props) => {
         variant="outline"
         type="button"
         disabled={isPending}
-        onClick={() => handleLogin("apple")}>
-        <FaAppleAlt />
-        Login with Apple
+        onClick={() => handleLogin("facebook")}>
+        <FaFacebook />
+        Login with Facebook
       </Button>
       <Button
         variant="outline"
