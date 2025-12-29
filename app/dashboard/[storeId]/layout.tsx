@@ -1,6 +1,6 @@
 import Navbar from "@/components/navbar";
 import prismadb from "@/lib/prismadb";
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -16,7 +16,6 @@ export default async function Dashboard({
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  const cookieStore = await cookies();
 
   if (!session) {
     redirect("/auth/login");
