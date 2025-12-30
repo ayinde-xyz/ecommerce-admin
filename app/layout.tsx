@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Comfortaa, Inter } from "next/font/google";
+import { Comfortaa,} from "next/font/google";
 import { ModalProvider } from "@/providers/modal-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
@@ -9,8 +9,8 @@ import { Toaster } from "sonner";
 const comfortaa = Comfortaa({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard",
-  description: "Admin Dashboard",
+  title: "Wearmerce  Dashboard",
+  description: "Admin dashboard for Wearmerce e-commerce platform",
 };
 
 export default async function RootLayout({
